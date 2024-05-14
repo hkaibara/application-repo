@@ -54,12 +54,14 @@ jobs:
         repository: hkaibara/deployment-repo
         ref: main
         token: ${{ secrets.GH_PAT }}
-
+        
     - name: Update Manifest Image Tag
       run: |
         ls -l
-        cd app1/env/test
-        kustomize edit set image app1-test:${{ github.sha }}
+        cd env/test
+        kustomize edit set image app-test:${{ github.sha }}
+        git config user.name hkaibara
+        git config user.email hiroshi.kaibara.hk@gmail.com
         git add .
         git diff-index --quiet HEAD || git commit --message "Update Image"
         git push
