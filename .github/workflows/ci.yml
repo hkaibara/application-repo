@@ -37,8 +37,29 @@ jobs:
         ECR_REPOSITORY: app-test
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        # Build a docker container and push it to ECR 
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        echo "Pushing image to ECR..."
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+
+    - name: Download Kustomize
+      run: |
+        mkdir -p $GITHUB_WORKSPACE/bin
+        curl -o $GITHUB_WORKSPACE/bin/kustomize_v5.4.1_linux_amd64.tar.gz --location "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.4.1/kustomize_v5.4.1_linux_amd64.tar.gz"
+        tar -xvzf $GITHUB_WORKSPACE/bin/kustomize_v5.4.1_linux_amd64.tar.gz
+        chmod u+x $GITHUB_WORKSPACE/kustomize
+
+    - name: Check out manifest
+      uses: actions/checkout@v3
+      with:
+        repository: hkaibara/deployment-repo
+        ref: main
+        token: ${{ secrets.GH_PAT }}
+
+    - name: Update Manifest Image Tag
+      run: |
+        ls -l
+        cd app1/env/test
+        kustomize edit set image app1-test:${{ github.sha }}
+        git add .
+        git diff-index --quiet HEAD || git commit --message "Update Image"
+        git push
