@@ -58,7 +58,7 @@ jobs:
     - name: Update Manifest Image Tag
       run: |
         ls -l
-        cd env/test
+        cd app1/env/test
         kustomize edit set image app-test:${{ github.sha }}
         git config user.name hkaibara
         git config user.email hiroshi.kaibara.hk@gmail.com
