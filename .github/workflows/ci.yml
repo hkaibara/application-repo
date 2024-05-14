@@ -14,13 +14,17 @@ jobs:
     steps:
     - name: Clone Repo
       uses: actions/checkout@v3
-
+      
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1.7.0
       with:
-        role-to-assume: arn:aws:iam::214084917052:role/githubactions
+        role-to-assume: ${{secrets.AWS_ROLE}}
         role-session-name: GitHub_to_AWS_via_FederatedOIDC
         aws-region: ${{vars.AWS_REGION}}
+
+    - name: Check Credentials
+      run: |
+       aws sts get-caller-identity
 
     - name: Login to Amazon ECR
       id: login-ecr
