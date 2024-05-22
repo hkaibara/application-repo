@@ -11,6 +11,5 @@ jobs:
     with:
       environment: ${{ github.ref_name }}
     secrets:
-      AWS_ROLE: ${{ secrets.AWS_ROLE }}
+      AWS_ROLE: ${{secrets.AWS_ROLE}}
       GH_PAT: ${{ secrets.GH_PAT }}
-      
