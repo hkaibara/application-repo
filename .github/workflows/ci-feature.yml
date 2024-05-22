@@ -5,5 +5,5 @@ on:
     branches:
       - feature/**
 jobs:
-  build_and_test:
+  Test:
     uses: hkaibara/CI-Workflows/.github/workflows/test.yml@main
