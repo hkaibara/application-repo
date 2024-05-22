@@ -1,0 +1,14 @@
+name: 'CI: Checks on PR'
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, review_requested, review_request_removed, labeled, unlabeled, synchronize]
+    
+jobs:
+  check_branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch
+        if: ${{ ( github.event.pull_request.base.ref == 'prod' && github.event.pull_request.head.ref != 'test' ) || ( github.event.pull_request.base.ref == 'test' && (startsWith(github.event.pull_request.head.ref, 'feature/') != true) ) }}
+        run: |
+          exit 1
