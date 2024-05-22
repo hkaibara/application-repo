@@ -15,7 +15,7 @@ jobs:
       output1: ${{steps.setenv.outputs.test}}
     steps:
       - id: setenv
-        run: echo ${{vars.AWS_REGION}} >> "$GITHUB_OUTPUT"
+        run: echo "${{vars.AWS_REGION}}" >> "$GITHUB_OUTPUT"
         
 
   testEcho:
