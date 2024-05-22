@@ -25,4 +25,4 @@ jobs:
       - name: verbose
         run: |
           echo ${{ github.ref_name }}
-          echo The PR was successfully merged ${{vars.ENV_VARS}} is the env var
+          echo The PR was successfully merged ${{vars.ECR}} is the ECR
