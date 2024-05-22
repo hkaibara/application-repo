@@ -7,3 +7,13 @@ on:
 jobs:
   Test:
     uses: hkaibara/CI-Workflows/.github/workflows/testcode-python.yml@main
+  
+  testEcho:
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - name: echo nested vars
+        run: |
+          echo ${{vars.TEST}}  naked
+          echo $${{vars.TEST}} nested
+          
