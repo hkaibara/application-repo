@@ -9,7 +9,8 @@ jobs:
   build_and_push_image:
     uses: hkaibara/CI-Workflows/.github/workflows/publish-python.yml@main
     with:
-      AWS_ROLE: ${{secrets.AWS_ROLE}}
-      AWS_REGION: ${{vars.AWS_REGION}}
-      ECR: ${{vars.ECR}}
-      GH_PAT: ${{secrets.GH_PAT}}
+      environment: ${{ github.ref_name }}
+    secrets:
+      AWS_ROLE: ${{ secrets.AWS_ROLE }}
+      GH_PAT: ${{ secrets.GH_PAT }}
+      
