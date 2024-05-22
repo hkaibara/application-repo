@@ -7,17 +7,9 @@ on:
       - prod
 jobs:
   build_and_push_image:
-
-    environment:
-      name: ${{ github.ref_name }}
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Build, Publish and Update CD
-        uses: hkaibara/CI-Workflows/.github/workflows/publish-python.yml@main
-        with:
-          AWS_ROLE: ${{secrets.AWS_ROLE}}
-          AWS_REGION: ${{vars.AWS_REGION}}
-          ECR: ${{vars.ECR}}
-          GH_PAT: ${{secrets.GH_PAT}}
+    uses: hkaibara/CI-Workflows/.github/workflows/publish-python.yml@main
+    with:
+      AWS_ROLE: ${{secrets.AWS_ROLE}}
+      AWS_REGION: ${{vars.AWS_REGION}}
+      ECR: ${{vars.ECR}}
+      GH_PAT: ${{secrets.GH_PAT}}
