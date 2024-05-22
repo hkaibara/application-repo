@@ -14,15 +14,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout
-        uses: actions/checkout@v3
-        id: checkout
-
-      - name: current Branch
-        run: |
-          echo ${{ github.ref_name }}
-
-      - name: verbose
-        run: |
-          echo ${{ github.ref_name }}
-          echo The PR was successfully merged ${{vars.ECR}} is the ECR
+      - name: Build, Publish and Update CD
+        uses: hkaibara/CI-Workflows/.github/workflows/publish-python.yml@main
+        with:
+          AWS_ROLE: ${{secrets.AWS_ROLE}}
+          AWS_REGION: ${{vars.AWS_REGION}}
+          ECR: ${{vars.ECR}}
+          GH_PAT: ${{secrets.GH_PAT}}
