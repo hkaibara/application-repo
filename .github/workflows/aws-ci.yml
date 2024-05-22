@@ -2,15 +2,64 @@ name: 'CI'
 
 on:
   push:
-    branches: [main]
+    branches:
+      - wala
 
 permissions:
       id-token: write
       contents: read
     
 jobs:
-  build:
+##########################################################################################################################################################################################################################################
+  check_branch:
     runs-on: ubuntu-latest
+    steps:
+    - name: Check branch
+      if: ${{ ( github.event.pull_request.base.ref == 'prod' && github.event.pull_request.head.ref != 'test' ) || ( github.event.pull_request.base.ref == 'test' && (startsWith(github.event.pull_request.head.ref, 'feature/') != true) ) }}
+      run: |
+        echo "${{github.event.pull_request.head.ref}}" 
+        echo test
+        exit 1
+##########################################################################################################################################################################################################################################
+  Build_and_Test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repo
+      uses: actions/checkout@v3      
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1.7.0
+      with:
+        role-to-assume: ${{secrets.AWS_ROLE}}
+        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+        aws-region: ${{vars.AWS_REGION}}
+
+    - name: Check Credentials
+      run: |
+       aws sts get-caller-identity
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build Image
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: app-test
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+
+    - name : Install Packages for PyTest
+      run : pip install pytest
+        
+    - name : Run tests 
+      run : pytest app.py
+
+##########################################################################################################################################################################################################################################
+  Publish:
+    runs-on: ubuntu-latest
+    needs: Build_and_Test
     steps:
     - name: Clone Repo
       uses: actions/checkout@v3
@@ -24,7 +73,7 @@ jobs:
 
     - name: Check Credentials
       run: |
-       aws sts get-caller-identity
+        aws sts get-caller-identity
 
     - name: Login to Amazon ECR
       id: login-ecr

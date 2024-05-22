@@ -1,0 +1,9 @@
+name: 'CI: Build and Test'
+
+on:
+  push:
+    branches:
+      - feature/**
+jobs:
+  Test:
+    uses: hkaibara/CI-Workflows/.github/workflows/test.yml@main
