@@ -7,13 +7,21 @@ on:
 jobs:
   Test:
     uses: hkaibara/CI-Workflows/.github/workflows/testcode-python.yml@main
-  
+
+
+  setENV:
+    runs-on: ubuntu-latest
+    outputs:
+      output1: ${{steps.setenv.outputs.test}}
+    steps:
+      - id: setenv
+        run: echo ${{vars.AWS_REGION}} >> "$GITHUB_OUTPUT"
+        
+
   testEcho:
     runs-on: ubuntu-latest
-    environment: test
+    needs: setENV
     steps:
-      - name: echo nested vars
-        run: |
-          echo ::set-env name=STEPVAR::$${{vars.TEST}}
-          echo $STEPVAR
-          
+      - env:
+          OUTPUT1: ${{needs.setENV.outputs.output1}}
+        run: echo "$OUTPUT1"
