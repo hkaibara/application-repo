@@ -5,8 +5,14 @@ on:
     branches:
       - test
       - prod
+
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build_and_push_image:
+    
     uses: hkaibara/CI-Workflows/.github/workflows/publish-python.yml@main
     with:
       environment: ${{ github.ref_name }}
