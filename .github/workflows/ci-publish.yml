@@ -2,8 +2,9 @@ name: 'CI: build and publish'
 on:
   push:
     branches:
-      - test
-      - prod
+      # - test
+      # - prod
+      - wala
 permissions:
   id-token: write
   contents: read
