@@ -5,6 +5,8 @@ on:
       - 1*
     branches:
       - feature/test
+      - test
+      - prod
 
 permissions:
   id-token: write
