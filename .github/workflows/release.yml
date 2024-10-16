@@ -1,0 +1,35 @@
+name: 'release'
+on:
+  push:
+    tags: 
+      - 1*
+    branches:
+      - feature/test
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  Bump_version:
+    runs-on: ubuntu-latest
+
+    environment: 
+      name: |-
+        ${{
+            github.ref_name == 'prod' && 'prod'
+          || github.ref_name == 'test' && 'test'
+          ||                              'feature'
+        }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+  
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: ${{vars.BUMP}}
+          WITH_V: false

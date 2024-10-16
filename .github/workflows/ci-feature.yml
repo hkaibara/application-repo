@@ -3,7 +3,8 @@ name: 'CI: Build and Test'
 on:
   push:
     branches:
-      - feature/**
+      # - feature/**
+      - wala
 jobs:
   Test:
     uses: hkaibara/CI-Workflows/.github/workflows/testcode-python.yml@main
