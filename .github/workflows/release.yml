@@ -4,7 +4,7 @@ on:
     tags: 
       - 1*
     branches:
-      - feature/test
+      - feature/*
       - test
       - prod
 
@@ -19,7 +19,7 @@ jobs:
     environment: 
       name: |-
         ${{
-            github.ref_name == 'prod' && 'prod'
+             github.ref_name == 'prod' && 'prod'
           || github.ref_name == 'test' && 'test'
           ||                              'feature'
         }}
