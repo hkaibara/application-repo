@@ -13,7 +13,13 @@ permissions:
 jobs:
   Bump_version:
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name }}
+    environment: |-
+      ${{
+           github.ref_name == 'prod' && 'prod'
+        || github.ref_name == 'test' && 'test'
+        ||                              'feature'
+      }}
+        
     steps:
       - uses: actions/checkout@v4
         with:
