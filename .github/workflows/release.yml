@@ -3,6 +3,8 @@ on:
   push:
     tags: 
       - 1*
+    branches:
+      - feature/test
 
 permissions:
   id-token: write
