@@ -1,15 +1,15 @@
 name: 'release'
 on:
-  pull_request:
-    branches:
-      - test
-      - prod
-    types: 
-     - closed
-  # push:
+  # pull_request:
   #   branches:
   #     - test
   #     - prod
+  #   types: 
+  #    - closed
+  push:
+    branches:
+      - test
+      - prod
 
 permissions:
   id-token: write
@@ -24,17 +24,22 @@ jobs:
         with:
           fetch-depth: '0'
 
-      # - name: set-env
-      #   id: set-env
+      - name: set-env
+        id: set-env
+        run: |
+          if "containts(github.event.head_commit.message, 'patch')"; then
+            echo "label=patch" >> "$GITHUB_OUTPUT"
+          elif "containts(github.event.head_commit.message, 'minor')"; then
+            echo "label=minor" >> "$GITHUB_OUTPUT"
+          elif "containts(github.event.head_commit.message, 'major')"; then
+            echo "label=major" >> "$GITHUB_OUTPUT"
+          elif "containts(github.event.head_commit.message, 'hotfix')"; then
+            echo "label=patch" >> "$GITHUB_OUTPUT"
+          else
+            echo "label=none" >> "$GITHUB_OUTPUT"
+          fi
+      
 
-      #   run: |
-      #     echo "label=${{
-      #            github.event.pull_request.labels.name == 'major' && 'major'
-      #         || github.event.pull_request.labels.name == 'Minor' && 'minor'
-      #         || github.event.pull_request.labels.name == 'hotfix' && 'patch'
-      #         || github.event.pull_request.labels.name == 'patch' && 'patch'
-      #         || 'none'
-      #       }}" >> "$GITHUB_OUTPUT"
   
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@v1
@@ -43,13 +48,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_BRANCHES: prod
           INITIAL_VERSION: 1.0.0
-
+          DEFAULT_BUMP: ${{steps.set-env.outputs.label}}
+          
       - name: verbose
         run: |
           echo ${{steps.bump.outputs.new_tag}}
           echo ${{steps.bump.outputs.tag}}
           echo ${{steps.bump.outputs.part}}
           echo ${{steps.bump.outputs.old_tag}}
+          echo ${{steps.set-env.outputs.label}}
 
       - name: github context
         env:
