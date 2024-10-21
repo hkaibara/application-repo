@@ -4,7 +4,8 @@ on:
     branches:
       - test
       - prod
-    types: [closed]
+    types: 
+     - closed
   # push:
   #   branches:
   #     - test
@@ -42,7 +43,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_BRANCHES: prod
           INITIAL_VERSION: 1.0.0
-          DEFAULT_BUMP: ${{github.event.pull_request.labels.name}}
+
       - name: verbose
         run: |
           echo ${{steps.bump.outputs.new_tag}}
