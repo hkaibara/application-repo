@@ -2,7 +2,6 @@ name: 'release'
 on:
   push:
     branches:
-      - feature/*
       - test
       - prod
 
@@ -25,7 +24,7 @@ jobs:
           DEFAULT_BUMP: |-
             ${{
                  github.event.label.name == 'Major' && 'major'
-              || github.ref_name == 'test' && 'minor'
-              ||                              'patch'
+              || github.event.label.name == 'Minor' && 'minor'
+              || github.event.label.name == 'hotfix' && 'minor'
+              ||                                        'patch'
             }}
-          WITH_V: false
