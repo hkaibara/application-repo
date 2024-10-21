@@ -1,8 +1,6 @@
 name: 'release'
 on:
   push:
-    tags: 
-      - 1*
     branches:
       - feature/*
       - test
@@ -15,15 +13,6 @@ permissions:
 jobs:
   Bump_version:
     runs-on: ubuntu-latest
-
-    environment: 
-      name: |-
-        ${{
-             github.ref_name == 'prod' && 'prod'
-          || github.ref_name == 'test' && 'test'
-          ||                              'feature'
-        }}
-
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,5 +22,10 @@ jobs:
         uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BUMP: ${{vars.BUMP}}
+          DEFAULT_BUMP: |-
+            ${{
+                 github.event.label.name == 'Major' && 'major'
+              || github.ref_name == 'test' && 'minor'
+              ||                              'patch'
+            }}
           WITH_V: false
