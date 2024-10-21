@@ -27,17 +27,37 @@ jobs:
       - name: set-env
         id: set-env
         run: |
-          if "contains(github.event.head_commit.message, 'patch')"; then
+          if [ contains(${{github.event.head_commit.message}}, 'patch') ]; then
             echo "label=patch" >> "$GITHUB_OUTPUT"
-          elif "contains(github.event.head_commit.message, 'minor')"; then
+
+
+          eliif [ contains(${{github.event.head_commit.message}}, 'hotfix') ]; then
+            echo "label=patch" >> "$GITHUB_OUTPUT"
+
+          eliif [ contains(${{github.event.head_commit.message}}, 'minor') ]; then
             echo "label=minor" >> "$GITHUB_OUTPUT"
-          elif "contains(github.event.head_commit.message, 'major')"; then
+
+          eliif [ contains(${{github.event.head_commit.message}}, 'major') ]; then
             echo "label=major" >> "$GITHUB_OUTPUT"
-          elif "contains(github.event.head_commit.message, 'hotfix')"; then
-            echo "label=patch" >> "$GITHUB_OUTPUT"
+            
           else
             echo "label=none" >> "$GITHUB_OUTPUT"
           fi
+
+
+
+
+          # if: "contains(github.event.head_commit.message, 'patch')" then
+          #   echo "label=patch" >> "$GITHUB_OUTPUT"
+          # elif: "contains(github.event.head_commit.message, 'patch')" then
+          #   echo "label=minor" >> "$GITHUB_OUTPUT"
+          # elif "contains(github.event.head_commit.message, 'major')"; then
+          #   echo "label=major" >> "$GITHUB_OUTPUT"
+          # elif "contains(github.event.head_commit.message, 'hotfix')"; then
+          #   echo "label=patch" >> "$GITHUB_OUTPUT"
+          # else
+          #   echo "label=none" >> "$GITHUB_OUTPUT"
+          # fi
       
 
   
