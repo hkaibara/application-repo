@@ -2,7 +2,6 @@ name: 'release'
 on:
   push:
     branches:
-      - feature/*
       - test
       - prod
 
@@ -13,15 +12,6 @@ permissions:
 jobs:
   Bump_version:
     runs-on: ubuntu-latest
-
-    # environment: 
-    #   name: |-
-    #     ${{
-    #          github.ref_name == 'prod' && 'major'
-    #       || github.ref_name == 'test' && 'minor'
-    #       ||                              'patch'
-    #     }}
-
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,7 +24,7 @@ jobs:
           DEFAULT_BUMP: |-
             ${{
                  github.event.label.name == 'Major' && 'major'
-              || github.ref_name == 'test' && 'minor'
-              ||                              'patch'
+              || github.event.label.name == 'Minor' && 'minor'
+              || github.event.label.name == 'hotfix' && 'minor'
+              ||                                        'patch'
             }}
-          WITH_V: false
