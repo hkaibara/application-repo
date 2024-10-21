@@ -1,6 +1,7 @@
 name: 'release'
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
       - test
       - prod
@@ -26,10 +27,10 @@ jobs:
           INITIAL_VERSION: 1.0.0
           DEFAULT_BUMP: |-
             ${{
-                 github.event.label.name == 'Major' && 'major'
-              || github.event.label.name == 'Minor' && 'minor'
-              || github.event.label.name == 'hotfix' && 'patch'
-              || github.event.label.name == 'patch' && 'patch'
+                 github.event.pull_request.labels.*.name == 'Major' && 'major'
+              || github.event.pull_request.labels.*.name == 'Minor' && 'minor'
+              || github.event.pull_request.labels.*.name == 'hotfix' && 'patch'
+              || github.event.pull_request.labels.*.name == 'patch' && 'patch'
               || 'none'
             }}
       - name: verbose
