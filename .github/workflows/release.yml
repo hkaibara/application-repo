@@ -28,13 +28,18 @@ jobs:
             ${{
                  github.event.label.name == 'Major' && 'major'
               || github.event.label.name == 'Minor' && 'minor'
-              || github.event.label.name == 'hotfix' && 'minor'
+              || github.event.label.name == 'hotfix' && 'patch'
               || github.event.label.name == 'patch' && 'patch'
               || 'none'
             }}
       - name: verbose
-        run: =|
+        run: |
           echo ${{steps.bump.outputs.new_tag}}
           echo ${{steps.bump.outputs.tag}}
           echo ${{steps.bump.outputs.part}}
           echo ${{steps.bump.outputs.old_tag}}
+
+      - name: github context
+        run: |
+          echo "$GITHUB_CONTEXT"
+          
