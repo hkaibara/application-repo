@@ -40,6 +40,8 @@ jobs:
           echo ${{steps.bump.outputs.old_tag}}
 
       - name: github context
+        env:
+            GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
           
