@@ -22,6 +22,7 @@ jobs:
         id: bump
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_BRANCHES: prod
           DEFAULT_BUMP: |-
             ${{
                  github.event.label.name == 'Major' && 'major'
