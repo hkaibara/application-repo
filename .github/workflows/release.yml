@@ -19,6 +19,7 @@ jobs:
   
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@v1
+        id: bump
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: |-
@@ -29,3 +30,9 @@ jobs:
               || github.event.label.name == 'patch' && 'patch'
               || 'none'
             }}
+      - name: verbose
+        run: =|
+          echo ${{steps.bump.outputs.new_tag}}
+          echo ${{steps.bump.outputs.tag}}
+          echo ${{steps.bump.outputs.part}}
+          echo ${{steps.bump.outputs.old_tag}}
