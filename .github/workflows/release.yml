@@ -26,5 +26,6 @@ jobs:
                  github.event.label.name == 'Major' && 'major'
               || github.event.label.name == 'Minor' && 'minor'
               || github.event.label.name == 'hotfix' && 'minor'
-              ||                                        'patch'
+              || github.event.label.name == 'patch' && 'patch'
+              || 'none'
             }}
