@@ -4,8 +4,6 @@ on:
     branches:
       - test
       - prod
-    types: 
-     - closed
   # push:
   #   branches:
   #     - test
@@ -48,7 +46,7 @@ jobs:
           echo ${{steps.bump.outputs.tag}}
           echo ${{steps.bump.outputs.part}}
           echo ${{steps.bump.outputs.old_tag}}
-          
+
       - name: github context
         env:
             GITHUB_CONTEXT: ${{ toJSON(github) }}
