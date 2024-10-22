@@ -24,5 +24,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_BRANCHES: prod
+          DEFAULT_BRANCH: prod
           INITIAL_VERSION: 1.0.0
           DEFAULT_BUMP: none
