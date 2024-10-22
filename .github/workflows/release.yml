@@ -41,7 +41,7 @@ jobs:
           echo ${{steps.bump.outputs.tag}}
           echo ${{steps.bump.outputs.part}}
           echo ${{steps.bump.outputs.old_tag}}
-          echo ${{github.event.pull_request.labels.*.name}}
+          echo ${{github.event.pull_request.labels.name}}
           
       - name: github context
         env:
