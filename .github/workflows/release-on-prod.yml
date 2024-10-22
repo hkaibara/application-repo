@@ -26,4 +26,4 @@ jobs:
           RELEASE_BRANCHES: prod
           DEFAULT_BRANCH: prod
           INITIAL_VERSION: 1.0.0
-          DEFAULT_BUMP: none
+          DEFAULT_BUMP: minor
