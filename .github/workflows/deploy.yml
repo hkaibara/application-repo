@@ -11,7 +11,7 @@ permissions:
 jobs:
   Versioning:
 
-    uses: hkaibara/application-repo/.github/workflows/versioning-reusable.yml@main
+    uses: hkaibara/application-repo/.github/workflows/versioning-reusable.yml@test
     with:
       bump: |-
         ${{
