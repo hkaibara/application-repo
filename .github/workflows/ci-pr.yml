@@ -2,7 +2,7 @@ name: 'CI: Checks on PR'
 
 on:
   pull_request:
-    types: [opened, edited, reopened, review_requested, review_request_removed, labeled, unlabeled, synchronize]
+    types: [edited, reopened, review_requested, review_request_removed, labeled, unlabeled, synchronize]
     
 jobs:
   check_branch:
