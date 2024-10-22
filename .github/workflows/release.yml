@@ -28,10 +28,10 @@ jobs:
           INITIAL_VERSION: 1.0.0
           DEFAULT_BUMP: |-
             ${{
-                 github.event.pull_request.labels.name == 'Major' && 'major'
-              || github.event.pull_request.labels.name == 'Minor' && 'minor'
-              || github.event.pull_request.labels.name == 'Hotfix' && 'patch'
-              || github.event.pull_request.labels.name == 'Patch' && 'patch'
+                 contains(github.event.pull_request.labels.*.name, 'Major')  && 'major'
+              || contains(github.event.pull_request.labels.*.name, 'Minor')  && 'minor'
+              || contains(github.event.pull_request.labels.*.name, 'Hotfix') && 'patch'
+              || contains(github.event.pull_request.labels.*.name, 'Patch')  && 'patch'
               || 'none'
             }}
 
