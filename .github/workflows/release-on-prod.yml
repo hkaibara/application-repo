@@ -1,4 +1,5 @@
-name: 'release'
+name: "tagged-release"
+
 on:
   push:
     branches:
@@ -18,12 +19,15 @@ jobs:
         with:
           fetch-depth: '0'
   
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@v1
-        id: bump
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_BRANCHES: prod
-          DEFAULT_BRANCH: prod
-          INITIAL_VERSION: 1.0.0
-          DEFAULT_BUMP: minor
+      - name: release tag
+        id: release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+
+
+      - name: verbose
+        run: |
+          echo ${{steps.release.outputs.automatic_releases_tag}}
+
