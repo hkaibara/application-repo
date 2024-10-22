@@ -22,5 +22,3 @@ jobs:
                 || contains(github.event.pull_request.labels.*.name, 'Patch')  && 'patch'
                 || 'none'
             }}
-        secrets:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
