@@ -30,8 +30,8 @@ jobs:
             ${{
                  github.event.pull_request.labels.*.name == 'Major' && 'major'
               || github.event.pull_request.labels.*.name == 'Minor' && 'minor'
-              || github.event.pull_request.labels.*.name == 'hotfix' && 'patch'
-              || github.event.pull_request.labels.*.name == 'patch' && 'patch'
+              || github.event.pull_request.labels.*.name == 'Hotfix' && 'patch'
+              || github.event.pull_request.labels.*.name == 'Patch' && 'patch'
               || 'none'
             }}
 
