@@ -1,13 +1,8 @@
 name: 'release'
 on:
   pull_request:
-    branches:
-      - test
-      - prod
-  # push:
-  #   branches:
-  #     - test
-  #     - prod
+    types: 
+     - closed
 
 permissions:
   id-token: write
@@ -46,7 +41,7 @@ jobs:
           echo ${{steps.bump.outputs.tag}}
           echo ${{steps.bump.outputs.part}}
           echo ${{steps.bump.outputs.old_tag}}
-
+          
       - name: github context
         env:
             GITHUB_CONTEXT: ${{ toJSON(github) }}
