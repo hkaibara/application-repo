@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   Bump_version:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'test'
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'test'
     runs-on: ubuntu-latest
 
     steps:
@@ -36,7 +36,7 @@ jobs:
             }}
 
   Release_Version:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'prod'
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'prod'
     runs-on: ubuntu-latest
 
     steps:
