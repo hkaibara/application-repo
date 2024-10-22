@@ -1,0 +1,26 @@
+name: 'Versioning'
+on:
+  pull_request:
+    types: 
+     - closed
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  Versioning:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hkaibara/application-repo/.github/workflows/versioning-reusable.yml@main
+        with:
+          bump: |-
+            ${{
+                    contains(github.event.pull_request.labels.*.name, 'Major')  && 'major'
+                || contains(github.event.pull_request.labels.*.name, 'Minor')  && 'minor'
+                || contains(github.event.pull_request.labels.*.name, 'Hotfix') && 'patch'
+                || contains(github.event.pull_request.labels.*.name, 'Patch')  && 'patch'
+                || 'none'
+            }}
+        secrets:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
