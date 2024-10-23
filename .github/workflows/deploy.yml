@@ -9,15 +9,24 @@ permissions:
   contents: write
 
 jobs:
-  Versioning:
-
-    uses: hkaibara/application-repo/.github/workflows/versioning-reusable.yml@test
+  Tag:
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'test'
+    uses: hkaibara/CI-Workflows/.github/workflows/versioning.yml@main
     with:
+      runner: ubuntu-latest
+      checkout_ref: ${{github.event.pull_request.merge_commit_sha}}
       bump: |-
         ${{
-                contains(github.event.pull_request.labels.*.name, 'Major')  && 'major'
-            || contains(github.event.pull_request.labels.*.name, 'Minor')  && 'minor'
-            || contains(github.event.pull_request.labels.*.name, 'Hotfix') && 'patch'
-            || contains(github.event.pull_request.labels.*.name, 'Patch')  && 'patch'
-            || 'none'
-        }}  
+             contains(github.event.pull_request.labels.*.name, 'Major')  && 'major'
+          || contains(github.event.pull_request.labels.*.name, 'Minor')  && 'minor'
+          || contains(github.event.pull_request.labels.*.name, 'Hotfix') && 'patch'
+          || contains(github.event.pull_request.labels.*.name, 'Patch')  && 'patch'
+          || 'none'
+        }}
+
+  Release:
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'prod'
+    uses: hkaibara/CI-Workflows/.github/workflows/release.yml@main
+    with:
+        runner: ubuntu-latest
+        checkout_ref: ${{github.event.pull_request.merge_commit_sha}}
